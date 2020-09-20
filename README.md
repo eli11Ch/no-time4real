@@ -16,7 +16,7 @@ Once installed, launch `rpi-imager`
 [This link](https://pysource.com/2018/10/31/raspberry-pi-3-and-opencv-3-installation-tutorial/) + python3-opencv + libopencv-dev
 
 ## Grove base HAT
-[Library](https://github.com/Seeed-Studio/grove.py/blob/master/grove/adc.py)
+[Library](https://github.com/Seeed-Studio/grove.py)
 
 ## Related Documentations
 
