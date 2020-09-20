@@ -19,4 +19,10 @@ Once installed, launch `rpi-imager`
 
 ## Related Documentations
 
-- [Infrared Distance Measurement with the Raspberry Pi](https://tutorials-raspberrypi.com/infrared-distance-measurement-with-the-raspberry-pi-sharp-gp2y0a02yk0f/)
+- [Infrared Distance Measurement with the Raspberry Pi](https://tutorials-raspberrypi.com/infrared-distance-measurement-with-the-raspberry-pi-sharp-gp2y0a02yk0f/) ;
+- [Code Test For Camera](https://stackoverrun.com/fr/q/7383231)
+
+
+## Problems (?)
+
+- *Grove Base HAT* (**3.3V**) vs *Sharp IR Distance Sensor* + *Servo Moteur* (**5V**)
