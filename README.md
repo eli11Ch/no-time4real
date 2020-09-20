@@ -21,6 +21,7 @@ Once installed, launch `rpi-imager`
 
 - [Infrared Distance Measurement with the Raspberry Pi](https://tutorials-raspberrypi.com/infrared-distance-measurement-with-the-raspberry-pi-sharp-gp2y0a02yk0f/) ;
 - [Code Test For Camera](https://stackoverrun.com/fr/q/7383231)
+- [Grove Base HAT](https://wiki.seeedstudio.com/Grove_Base_Hat_for_Raspberry_Pi/)
 
 
 ## Problems (?)
