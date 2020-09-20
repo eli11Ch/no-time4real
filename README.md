@@ -1,1 +1,2 @@
-# not-time-2-real
+# Not Time2Real
+Installation steps for **Informatique Temps reel**'s model
