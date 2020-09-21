@@ -31,4 +31,4 @@ Once installed, launch `rpi-imager`
 ## Problems (?)
 
 - *Grove Base HAT* (**3.3V**) vs *Sharp IR Distance Sensor* + *Servo Moteur* (**5V**) => Seems to be working
-- Grove Library use 
+- GPIO not good for realtime
