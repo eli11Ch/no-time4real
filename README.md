@@ -1,7 +1,9 @@
 # No Time4Real
-*Installation steps for **Informatique Temps reel**'s model*
+*Logbook for **realtime** project*
 
-##  SD card Preparation via [rpi-imager](https://howtoraspberrypi.com/create-sd-card-windows-mac-linux-raspberry-pi-imager/)
+## Installation and Setup
+
+###  SD card Preparation via [rpi-imager](https://howtoraspberrypi.com/create-sd-card-windows-mac-linux-raspberry-pi-imager/)
 For Ubuntu:
 ```
 snap install rpi-imager
