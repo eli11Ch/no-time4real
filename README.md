@@ -1,5 +1,5 @@
 # No Time4Real
-*Logbook for **realtime** project*
+*Logbook for **realtime project***
 
 ## Installation and Setup
 
