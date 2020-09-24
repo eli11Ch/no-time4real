@@ -1,5 +1,20 @@
 # No Time4Real
-*Logbook for **realtime project***
+*Logbook of **realtime computing** introduction*
+
+## Purpose
+*<In Progress>*
+A  lidar DIY for find obstacle and point the camera at it.
+With realtime computing (*C*)
+
+
+## Materials
+
+- DC motor with encoder;
+- IR distance sensor;
+- Raspberry pi 3 B+;
+- Sd card;
+- x2 Servo-motor;
+- USB camera.
 
 ## Installation and Setup
 
@@ -35,4 +50,3 @@ Once installed, launch `rpi-imager`
 ## Problems (?)
 
 - *Grove Base HAT* (**3.3V**) vs *Sharp IR Distance Sensor* + *Servo Moteur* (**5V**) => Seems to be working
-- GPIO not good for realtime
