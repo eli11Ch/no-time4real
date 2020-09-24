@@ -3,7 +3,7 @@
 
 ## Purpose
 *<In Progress>*
-A  lidar DIY for find obstacle and point the camera at it.
+Make a lidar DIY for find obstacle and point the camera at it.
 With realtime computing (*C*)
 
 
