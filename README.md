@@ -23,6 +23,8 @@ Once installed, launch `rpi-imager`
 ### Grove base HAT
 [Library](https://github.com/Seeed-Studio/grove.py)
 
+### [C++ GPIO](https://www.aranacorp.com/fr/programmez-votre-raspberry-pi-en-c/)
+
 ## Related Documentations
 
 - [Infrared Distance Measurement with the Raspberry Pi](https://tutorials-raspberrypi.com/infrared-distance-measurement-with-the-raspberry-pi-sharp-gp2y0a02yk0f/) ;
