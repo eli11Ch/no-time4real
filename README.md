@@ -32,6 +32,10 @@ Once installed, launch `rpi-imager`
 ### Installation and Configuration
 <*In Progress*>
 
+## Do a Lidar
+
+## Do project (*Minority report*) Camera + servo-motor
+
 ### Use of OpenCV (Camera)
 [This link](https://pysource.com/2018/10/31/raspberry-pi-3-and-opencv-3-installation-tutorial/) + python3-opencv + libopencv-dev
 
