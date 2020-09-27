@@ -6,9 +6,7 @@
 Make a lidar DIY for find obstacle and point the camera at it.
 With realtime computing (*C*)
 
-
 ## Materials
-
 - DC motor with encoder;
 - IR distance sensor;
 - Raspberry pi 3 B+;
