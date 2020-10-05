@@ -2,12 +2,14 @@
 #define CIR_BUF_H
 
 #include<stdlib.h>
+#include<pthread.h>
 
 typedef struct cir_buf {
 	char *data;
 	size_t size;
 	size_t reader;
 	size_t writer; // fill the buffer
+	pthread_mutex_t	m = PTHREAD_MUTEX_INITIALIZER;
 } cir_buf_t;
 
 

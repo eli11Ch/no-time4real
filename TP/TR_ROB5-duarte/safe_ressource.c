@@ -41,9 +41,7 @@ void *task(void *arg) {
 
 void *write_task(void *arg) { // Question 3.3
 	char *buf = (char *) arg;
-
 	for(size_t i = 0; i < SZ; i++) {
-		while(cir_buf.reader!=cir_buf.writer)
 		cir_write(&cir_buf, buf[i]);
 	}
 	return NULL;	
@@ -55,14 +53,16 @@ void *send_task(void *arg) { // Question 3.3
 	while(i <total) {
 		
 		if(cir_buf.reader!=cir_buf.writer) {
+			pthread_mutex_lock(&m);	
 			safe_send(cir_read(&cir_buf),(size_t) 1);
 			i = i + 1;
+			pthread_mutex_unlock(&m);
 		}
 	}
 	return NULL;
 }
 
-int main(int argc, char **argv) {
+int main(void) {
     cir_init(&cir_buf, SZ); // Question 3.3
     pthread_t id[5]; // Question 3.3
     int i;

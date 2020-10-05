@@ -17,7 +17,7 @@ ex3: safe_ressource.o cir_buf.o
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -f *.o core
+	rm -f *.o
 
 mrproper: clean
 	rm -f $(EXEC)
