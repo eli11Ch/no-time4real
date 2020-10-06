@@ -1,23 +1,23 @@
 CC= gcc
-CFLAGS= -Wall $(shell xeno-config --xeno-cflags)
-LDFLAGS= -Wall $(shell xeno-config --xeno-ldflags --native) -lpthread -lrt
+CFLAGS= -Wall #$(shell xeno-config --xeno-cflags)
+LDFLAGS= -Wall -lpthread -lrt #$(shell xeno-config --xeno-ldflags --native)
 EXEC= ex2 ex3
-#SRC= $(wildcard *.c)
-#OBJ= $(SRC:.c=.o)
+SRC= $(wildcard */*.c)
+OBJ= $(SRC:.c=.o)
 
 all: $(EXEC)
 
-ex2: condition.o
+ex2: Ex2/condition.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-ex3: safe_ressource.o cir_buf.o
+ex3: Ex3/safe_ressource.o Ex3/cir_buf.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 	
 %.o: %.c %.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -f *.o
+	rm -f $(OBJ)
 
 mrproper: clean
 	rm -f $(EXEC)

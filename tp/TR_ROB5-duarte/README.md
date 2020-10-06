@@ -6,6 +6,14 @@
 
 ## 2) Tricky conditions
 
+*file : [condition.c](Ex2/condition.c).*
+
+***Usage***
+```s
+$ make
+$ ./ex2
+```
+
 ### Question 2.1
 
 In order to exacerbate the problem, we place a *sleep(1)* :
@@ -56,9 +64,7 @@ In order to launch 3 **receiver threads**, we change :
 
 The three first modifications are obvious. The last is to send the signal to all the waiting thread and not only one.
 
----
-
-To correctly unlocks the 3 **receiver threads**, we use a semaphore :
+To correctly unlock the three **receiver threads**, we use a semaphore :
 
 - We include the library and a static semaphore ;
 ```c
@@ -67,7 +73,7 @@ To correctly unlocks the 3 **receiver threads**, we use a semaphore :
 static sem_t s; // Question 2.3
 ```
 
-- We change the lock and unlock mutex by initialyze and destroy the semaphore (inside the **main thread**) ;
+- We change the lock and unlock mutex by initializing and destroying the semaphore (inside the **main thread**) ;
 ```c
     //pthread_mutex_lock(&m); // Initially
    	sem_init(&s, 0, 0); // Question 2.3
@@ -109,3 +115,113 @@ static sem_t s; // Question 2.3
 While the **sender thread** waits for the semaphore post, each **receiver thread** will lock the mutex, post the semaphore and wait for the signal.
 
 So the **sender thread** has to wait until all the **receiver threads** are ready to receive the signal. 
+
+## 3) Safe Ressource
+
+*files : [safe_ressource.c](Ex3/safe_ressource.c), [cir_buf.h](Ex3/cir_buf.h), [cir_buf.c](Ex3/cir_buf.c).*
+
+***Usage***
+```s
+$ make
+$ ./ex3
+```
+### Question 3.1
+
+Here the implementations of `safe_send` and `safe_task` :
+
+```c
+int safe_send(char *data, size_t len) { // Question 3.1
+	pthread_mutex_lock(&m);
+	send(data, len);
+	pthread_mutex_unlock(&m);
+	return 0;
+}
+```
+
+```c
+void *safe_task(void *arg) { // Question 3.1
+    char *buf = (char *) arg;
+
+    safe_send(buf, SZ);
+    return NULL;
+}
+```
+
+### Question 3.2
+
+For the same list of words :
+```s
+$ ./ex3
+Aa1b[2B{3cC(4dD5EF)e}]6f
+time task : 32.018 ms
+ABCDEFabcdef[{()}]123456
+time safe_task : 129.486 ms
+```
+
+### Question 3.3
+
+The idea is to implemente a [Producer/Consumer Design Pattern](https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem) with a [Circular Buffer](https://en.wikipedia.org/wiki/Circular_buffer).
+
+- The goal of the **producer thread** is to writer word in the buffer ;
+```c
+void *producer_task(void *arg) { // Question 3.3
+	char *buf = (char *) arg;
+	pthread_mutex_lock(&m);
+	for(size_t i = 0; i < SZ; i++) {
+		cir_write(&cir_buf, buf[i]);
+	}
+	pthread_mutex_unlock(&m);
+	return NULL;	
+}
+```
+
+- The goal of the **consumer thread** is to read words in the buffer and send them ;
+```c
+void *consumer_task(void *arg) { // Question 3.3
+	while(!cir_is_empty(&cir_buf)) {
+		send(cir_read(&cir_buf),(size_t) 1);
+	}
+	return NULL;
+}
+```
+
+In [cir_buf.h](Ex3/cir_buf.h), you can find a simple implementation of a circular buffer.
+
+There is 2 interesting functions :
+
+- `cir_write(cir_buf_t *c, char data)` is to write in the circular buffer. If the circular buffer is full, it will wait a *less signal* (generate when something is readed in the circular buffer) ;
+```c
+void cir_write(cir_buf_t *c, char data) {
+	pthread_mutex_lock(&c->mutex);
+	while(cir_is_full(c)) {
+		pthread_cond_wait(&c->less, &c->mutex);
+	}
+	c->data[c->writer]=data;
+	c->writer = (c->writer + 1)%c->size;
+	c->count ++;
+	pthread_cond_signal(&c->more);
+	pthread_mutex_unlock(&c->mutex);
+}
+```
+
+- `cir_read(cir_buf_t *c)` is to read in the circular buffer. If the circular buffer is empty, it will wait a *more signal* (generate when something is wrote in the circular buffer) ;
+```c
+char* cir_read(cir_buf_t *c) {
+	pthread_mutex_lock(&c->mutex);
+	while(cir_is_empty(c)) {
+		pthread_cond_wait(&c->more, &c->mutex);
+	}
+	char* data = c->data + c->reader;
+	c->reader = (c->reader + 1)%c->size;
+	c->count --;
+	pthread_cond_signal(&c->less);
+	pthread_mutex_unlock(&c->mutex);
+	return data;
+}
+```
+
+The idea is to lock the circular buffer when it is used (for writing or reading). If the wished action is unavailable, the thread waits until the action is available.
+
+## Related Documents
+
+- [The Producer/Consumer Problem](https://docs.oracle.com/cd/E19455-01/806-5257/sync-31/index.html)

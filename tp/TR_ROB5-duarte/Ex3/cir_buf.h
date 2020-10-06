@@ -47,7 +47,7 @@ void cir_write(cir_buf_t *c, char data);
  *
  * Read the buffer content
  * @param cir_buf_t* circular buffer pointer
- * @output char* the character pointer by the reader
+ * @return char* the character pointer by the reader
  */
 char* cir_read(cir_buf_t *c);
 
@@ -56,7 +56,7 @@ char* cir_read(cir_buf_t *c);
  * 
  * predicate for empty state
  * @param cir_buf_t* circular buffer pointer
- * @output int 1 if is empty, 0 else
+ * @return int 1 if is empty, 0 else
  */
 int cir_is_empty(cir_buf_t *c);
 
@@ -65,7 +65,7 @@ int cir_is_empty(cir_buf_t *c);
  * 
  * predicate for full state
  * @param cir_buf_t* circular buffer pointer
- * @output int 1 if is full, 0 else
+ * @return int 1 if is full, 0 else
  */
 int cir_is_full(cir_buf_t *c);
 
