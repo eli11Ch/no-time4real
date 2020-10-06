@@ -1,5 +1,5 @@
 # No Time4Real
-*Logbook of **realtime computing** introduction*
+*Logbook of **real time computing** introduction*
 
 ## Purpose
 *<In Progress>*

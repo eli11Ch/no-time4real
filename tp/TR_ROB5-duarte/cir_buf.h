@@ -1,15 +1,18 @@
 #ifndef CIR_BUF_H
 #define CIR_BUF_H
 
-#include<stdlib.h>
-#include<pthread.h>
+#include <stdlib.h>
+#include <pthread.h>
 
 typedef struct cir_buf {
 	char *data;
 	size_t size;
-	size_t reader;
+	size_t count;
+	size_t reader; // read the buffer
 	size_t writer; // fill the buffer
-	pthread_mutex_t	m = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_t mutex;
+	pthread_cond_t more;
+	pthread_cond_t less;
 } cir_buf_t;
 
 
@@ -44,8 +47,26 @@ void cir_write(cir_buf_t *c, char data);
  *
  * Read the buffer content
  * @param cir_buf_t* circular buffer pointer
- * @output char the character points by the reader
+ * @output char* the character pointer by the reader
  */
 char* cir_read(cir_buf_t *c);
+
+/**
+ * cir_is_empty
+ * 
+ * predicate for empty state
+ * @param cir_buf_t* circular buffer pointer
+ * @output int 1 if is empty, 0 else
+ */
+int cir_is_empty(cir_buf_t *c);
+
+/**
+ * cir_is_full
+ * 
+ * predicate for full state
+ * @param cir_buf_t* circular buffer pointer
+ * @output int 1 if is full, 0 else
+ */
+int cir_is_full(cir_buf_t *c);
 
 #endif // CIR_BUF_H
