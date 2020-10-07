@@ -101,11 +101,12 @@ static sem_t s; // Question 2.3
     sleep(1); // Question 2.1
     sem_post(&s); // Question 2.3
     pthread_cond_wait(&c, &m);
+    sem_post(&s);
     printf("%08lX: Received signal. count=%d\n", pthread_self(), count);
     pthread_mutex_unlock(&m); // Question 2.3
 ```
 
-- We add a loop in order to wait three semaphores post (inside the **sender thread**).
+- We add two loops in order to wait three semaphores post and to synchronise the sent and recieved signals (inside the **sender thread** and inside the **if loop of sender thread** ).
 ```c
 	for(int i = 0; i < 3; i = i + 1) { // Question 2.3
 		sem_wait(&s);
@@ -115,6 +116,8 @@ static sem_t s; // Question 2.3
 While the **sender thread** waits for the semaphore post, each **receiver thread** will lock the mutex, post the semaphore and wait for the signal.
 
 So the **sender thread** has to wait until all the **receiver threads** are ready to receive the signal. 
+
+
 
 ## 3) Safe Ressource
 
