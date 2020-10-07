@@ -127,7 +127,7 @@ $ ./ex3
 ```
 ### Question 3.1
 
-Here the implementations of `safe_send` and `safe_task` :
+Here are the implementations of `safe_send` and `safe_task` :
 
 ```c
 int safe_send(char *data, size_t len) { // Question 3.1
@@ -149,7 +149,7 @@ void *safe_task(void *arg) { // Question 3.1
 
 ### Question 3.2
 
-For the same list of words :
+For the same list of words we get two different durations, we can see that safe_task takes 10 times longer than task :
 ```s
 $ ./ex3
 Aa1b[2B{3cC(4dD5EF)e}]6f
@@ -162,7 +162,7 @@ time safe_task : 129.486 ms
 
 The idea is to implemente a [Producer/Consumer Design Pattern](https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem) with a [Circular Buffer](https://en.wikipedia.org/wiki/Circular_buffer).
 
-- The goal of the **producer thread** is to writer word in the buffer ;
+- The goal of the **producer thread** is to write words in the buffer ;
 ```c
 void *producer_task(void *arg) { // Question 3.3
 	char *buf = (char *) arg;
@@ -175,7 +175,7 @@ void *producer_task(void *arg) { // Question 3.3
 }
 ```
 
-- The goal of the **consumer thread** is to read words in the buffer and send them ;
+- The goal of the **consumer thread** is to read words in the buffer and then send them ;
 ```c
 void *consumer_task(void *arg) { // Question 3.3
 	while(!cir_is_empty(&cir_buf)) {
@@ -187,9 +187,9 @@ void *consumer_task(void *arg) { // Question 3.3
 
 In [cir_buf.h](Ex3/cir_buf.h), you can find a simple implementation of a circular buffer.
 
-There is 2 interesting functions :
+There are two interesting functions :
 
-- `cir_write(cir_buf_t *c, char data)` is to write in the circular buffer. If the circular buffer is full, it will wait a *less signal* (generate when something is readed in the circular buffer) ;
+- The goal of `cir_write(cir_buf_t *c, char data)` is to write in the circular buffer. If the circular buffer is full, it will wait a *less signal* (generates when something is read in the circular buffer) ;
 ```c
 void cir_write(cir_buf_t *c, char data) {
 	pthread_mutex_lock(&c->mutex);
@@ -204,7 +204,7 @@ void cir_write(cir_buf_t *c, char data) {
 }
 ```
 
-- `cir_read(cir_buf_t *c)` is to read in the circular buffer. If the circular buffer is empty, it will wait a *more signal* (generate when something is wrote in the circular buffer) ;
+- The goal of `cir_read(cir_buf_t *c)` is to read in the circular buffer. If the circular buffer is empty, it will wait a *more signal* (generates when something is written in the circular buffer) ;
 ```c
 char* cir_read(cir_buf_t *c) {
 	pthread_mutex_lock(&c->mutex);
@@ -220,7 +220,7 @@ char* cir_read(cir_buf_t *c) {
 }
 ```
 
-The idea is to lock the circular buffer when it is used (for writing or reading). If the wished action is unavailable, the thread waits until the action is available.
+The idea is to lock the circular buffer when it is used (for writing or reading). If the wanted action is unavailable, the thread waits until the action is available.
 
 ## Related Documents
 
