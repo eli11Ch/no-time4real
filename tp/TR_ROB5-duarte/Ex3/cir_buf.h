@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 typedef struct cir_buf {
 	char *data;
@@ -11,8 +12,10 @@ typedef struct cir_buf {
 	size_t reader; // read the buffer
 	size_t writer; // fill the buffer
 	pthread_mutex_t mutex;
-	pthread_cond_t more;
-	pthread_cond_t less;
+	pthread_cond_t c_more;
+	pthread_cond_t c_less;
+	sem_t s_empty;
+	sem_t s_fill;
 } cir_buf_t;
 
 
@@ -50,6 +53,24 @@ void cir_write(cir_buf_t *c, char data);
  * @return char the character pointer by the reader
  */
 char cir_read(cir_buf_t *c);
+
+/**
+ * cir_write_s
+ *
+ * Write on the buffer with semaphore
+ * @param cir_buf_t* circular buffer pointer
+ * @param char data to write
+ */
+void cir_write_s(cir_buf_t *c, char data);
+
+/**
+ * cir_read_s
+ *
+ * Read the buffer content with semaphore
+ * @param cir_buf_t* circular buffer pointer
+ * @return char the character pointer by the reader
+ */
+char cir_read_s(cir_buf_t *c);
 
 /**
  * cir_is_empty

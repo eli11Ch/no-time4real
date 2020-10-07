@@ -79,6 +79,23 @@ void *consumer_task(void *arg) { // Question 3.3
 	return NULL;
 }
 
+void *producer_task_s(void *arg) { // Question 3.3
+	char *buf = (char *) arg;
+	pthread_mutex_lock(&m);
+	for(size_t i = 0; i < SZ; i++) {
+		cir_write_s(&cir_buf, buf[i]);
+	}
+	pthread_mutex_unlock(&m);
+	return NULL;	
+}
+
+void *consumer_task_s(void *arg) { // Question 3.3
+	while(!cir_is_empty(&cir_buf)) {
+		send_char(cir_read_s(&cir_buf));
+	}
+	return NULL;
+}
+
 int main(int argc, char **argv) {
     pthread_t id[5];
     int i;
@@ -126,7 +143,25 @@ int main(int argc, char **argv) {
     clock_gettime(CLOCK_REALTIME, &end);
     printf("\n");
 
-	printf("time prod_consum_task : %.3lf ms\n", duration(&start, &end)); // Question 3.2
+	printf("time prod_consum_task with signal : %.3lf ms\n", duration(&start, &end)); // Question 3.2
+
+	cir_free(&cir_buf);
+
+    cir_init(&cir_buf, SZ*4); // Question 3.3
+    clock_gettime(CLOCK_REALTIME, &start);
+    for (i = 0; i < 4; i++) {
+		pthread_create(&id[i], NULL, producer_task_s, msgs[i]); // Question 3.3
+	}
+	pthread_create(&id[4], NULL, consumer_task_s, NULL);
+
+	pthread_join(id[4], NULL);
+    for (i = 0; i < 4; i++) {
+		pthread_join(id[i], NULL);
+	}
+    clock_gettime(CLOCK_REALTIME, &end);
+    printf("\n");
+
+	printf("time prod_consum_task with semaphore : %.3lf ms\n", duration(&start, &end)); // Question 3.2
 
 	cir_free(&cir_buf);
     return 0;
