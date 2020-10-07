@@ -30,12 +30,12 @@ void cir_write(cir_buf_t *c, char data) {
 	pthread_mutex_unlock(&c->mutex);
 }
 
-char* cir_read(cir_buf_t *c) {
+char cir_read(cir_buf_t *c) {
 	pthread_mutex_lock(&c->mutex);
 	while(cir_is_empty(c)) {
 		pthread_cond_wait(&c->more, &c->mutex);
 	}
-	char* data = c->data + c->reader;
+	char data = c->data[c->reader];
 	c->reader = (c->reader + 1)%c->size;
 	c->count --;
 	pthread_cond_signal(&c->less);

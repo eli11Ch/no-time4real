@@ -74,7 +74,7 @@ void *producer_task(void *arg) { // Question 3.3
 
 void *consumer_task(void *arg) { // Question 3.3
 	while(!cir_is_empty(&cir_buf)) {
-		send(cir_read(&cir_buf),(size_t) 1);
+		send_char(cir_read(&cir_buf));
 	}
 	return NULL;
 }
